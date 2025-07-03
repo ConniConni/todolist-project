@@ -1,3 +1,9 @@
+import csv
+
+
+CSV_FILE = "todo.csv"
+
+
 def main():
     """todoリストアプリのメイン関数"""
 
@@ -43,6 +49,26 @@ def show_task_list():
     CSVファイルもしくはCSVファイルの中身がない場合は新規タスク登録を促すプロンプトを表示
     """
     print("==== タスク一覧を表示します ====")
+    task_list = []  # CSVファイルからタスク一覧を受け取る空のリスト
+
+    try:
+        with open(CSV_FILE, "r", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                task_list.append(row[0])
+
+    except FileNotFoundError:
+        print("エラー: CSVファイルがありません 新規タスク追加をしてください")
+        return
+
+    # CSVファイルの中身をチェックする
+    if not task_list:
+        print("エラー: CSVファイルの中身が空です 新規タスク追加をしてください")
+        return
+
+    # enumerate()関数 enumerate("第1引数: リストなどのイテラブルオブジェクト","第2引数: インデックス開始番号")
+    for i, task in enumerate(task_list, 1):
+        print(f"{i}: {task}")
 
 
 def delete_task():
