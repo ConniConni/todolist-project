@@ -49,16 +49,24 @@ def show_task_list():
     CSVファイルもしくはCSVファイルの中身がない場合は新規タスク登録を促すプロンプトを表示
     """
     print("==== タスク一覧を表示します ====")
-    task_list = []
+    task_list = []  # CSVファイルからタスク一覧を受け取る空のリスト
+    i = 0  # タスクの一覧を表示する際に割り振る番号を管理する変数
 
-    with open(CSV_FILE, "r", encoding="utf-8") as f:
-        reader = csv.reader(f)
-        for row in reader:
-            task_list.append(row[0])
-    i = 0
-    for task in task_list:
-        i += 1
-        print(f"{i}: {task}")
+    try:
+        with open(CSV_FILE, "r", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                task_list.append(row[0])
+
+        for task in task_list:
+            i += 1
+            print(f"{i}: {task}")
+
+    except FileNotFoundError:
+        print("エラー: CSVファイルがありません 新規タスク追加をしてください")
+
+    except IndexError:
+        print("エラー: CSVファイルの中身が空です 新規タスクを追加してください")
 
 
 def delete_task():
