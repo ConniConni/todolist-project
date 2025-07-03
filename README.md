@@ -79,7 +79,7 @@
 
 ### 仮想環境の作成
 
-`python -m venv venv`を実行する。
+`python -m venv venv`を実行する
 wordbook-project フォルダに venv というサブフォルダが生成される ← 仮想環境本体
 
 ### 仮想環境のアクティベート（有効化）
@@ -95,24 +95,33 @@ wordbook-project フォルダに venv というサブフォルダが生成され
 
 ### 新しい Git リポジトリを作成する
 
-`.gitignore`ファイルを作成し、追跡対象外とするディレクトリ名やファイル名を記述する
-ワークスペースのルートで以下を実行する
+# `.gitignore`ファイルを作成し、追跡対象外とするディレクトリ名やファイル名を記述する
+
+# ワークスペースのルートで以下を実行する
+
 `git init`
-カレントディレクトリに`.git/`が生成される
+
+# カレントディレクトリに`.git/`が生成される
 
 ### GitHub 上でリモートリポジトリを作成する
 
-ブラウザで Github を開きログインし、"New repository"を作成する
-リポジトリ名を入力する
-※"Add a README file", "Add .gitignore", "Choose a license" のチェックボックスは未チェックにしておく
-"Create repository" ボタンをクリックする
+# ブラウザで Github を開きログインし、"New repository"を作成する
+
+# リポジトリ名を入力する
+
+# ※"Add a README file", "Add .gitignore", "Choose a license" のチェックボックスは未チェックにしておく
+
+# "Create repository" ボタンをクリックする
 
 ### リモート接続先を登録する
 
-Github リポジトリの URL を`origin`という名前で登録する
-コマンドラインで以下を実行する(以下全てコマンドラインでの実行)
+# Github リポジトリの URL を`origin`という名前で登録する
+
+# コマンドラインで以下を実行する(以下全てコマンドラインでの実行)
+
 `git remote add origin ****`
-※ \***_ には github に表示された`https://_**`を入力する
+
+# ※ \***_ には github に表示された`https://_**`を入力する
 
 ### ブランチ名を main に変更する
 
@@ -120,9 +129,12 @@ Github リポジトリの URL を`origin`という名前で登録する
 
 ### 最初のコミットを作成する
 
-変更をステージング
+# 変更をステージング
+
 `git add .`
-最初のコミット
+
+# 最初のコミット
+
 `git commit -m "Initial commit: プロジェクトの初期セットアップ"`
 
 ### ローカルの変更を GitHub に Push する
