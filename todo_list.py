@@ -18,6 +18,7 @@ def main():
             print("==== タスクを削除します ====")
         if choice_mode == 4:
             print("==== アプリを終了します ====")
+            break
 
 
 if __name__ == "__main__":
