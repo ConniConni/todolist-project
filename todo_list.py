@@ -34,6 +34,8 @@ def add_task():
     入力されたタスクはCSVファイルに書き込む
     """
     print("==== 新規タスクを追加します ====")
+    print("タスクを入力してください")
+    input_task = input(">>> ")
 
 
 def show_task_list():
