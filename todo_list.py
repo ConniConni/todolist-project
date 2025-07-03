@@ -1,3 +1,9 @@
+import csv
+
+
+CSV_FILE = "todo.csv"
+
+
 def main():
     """todoリストアプリのメイン関数"""
 
@@ -33,9 +39,19 @@ def add_task():
     ユーザーに新規タスクの入力を促すプロンプトを表示
     入力されたタスクはCSVファイルに書き込む
     """
+
+    task_list = []
+
     print("==== 新規タスクを追加します ====")
     print("タスクを入力してください")
     input_task = input(">>> ")
+    task_list.append(input_task)
+
+    # TODO sho_task_list実装後、todo.csvにすでに値が登録してある場合、タスクを読み込み、task_listに代入する処理を追加
+
+    with open(CSV_FILE, "w", encoding="utf-8", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerows(task_list)
 
 
 def show_task_list():
