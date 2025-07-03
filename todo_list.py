@@ -50,7 +50,6 @@ def show_task_list():
     """
     print("==== タスク一覧を表示します ====")
     task_list = []  # CSVファイルからタスク一覧を受け取る空のリスト
-    i = 0  # タスクの一覧を表示する際に割り振る番号を管理する変数
 
     try:
         with open(CSV_FILE, "r", encoding="utf-8") as f:
@@ -67,8 +66,8 @@ def show_task_list():
         print("エラー: CSVファイルの中身が空です 新規タスク追加をしてください")
         return
 
-    for task in task_list:
-        i += 1
+    # enumerate()関数 enumerate("第1引数: リストなどのイテラブルオブジェクト","第2引数: インデックス開始番号")
+    for i, task in enumerate(task_list, 1):
         print(f"{i}: {task}")
 
 
