@@ -58,15 +58,18 @@ def show_task_list():
             for row in reader:
                 task_list.append(row[0])
 
-        for task in task_list:
-            i += 1
-            print(f"{i}: {task}")
-
     except FileNotFoundError:
         print("エラー: CSVファイルがありません 新規タスク追加をしてください")
+        return
 
-    except IndexError:
-        print("エラー: CSVファイルの中身が空です 新規タスクを追加してください")
+    # CSVファイルの中身をチェックする
+    if not task_list:
+        print("エラー: CSVファイルの中身が空です 新規タスク追加をしてください")
+        return
+
+    for task in task_list:
+        i += 1
+        print(f"{i}: {task}")
 
 
 def delete_task():
