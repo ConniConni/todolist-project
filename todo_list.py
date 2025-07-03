@@ -8,17 +8,23 @@ def main():
         print("3: タスク削除")
         print("4: 終了")
 
-        choice_mode = int(input(">>> "))
+        try:
+            choice_mode = int(input(">>> "))
+        except ValueError:
+            print("エラー: 整数を入力してください")
+            continue
 
         if choice_mode == 1:
             add_task()
-        if choice_mode == 2:
+        elif choice_mode == 2:
             show_task_list()
-        if choice_mode == 3:
+        elif choice_mode == 3:
             delete_task()
-        if choice_mode == 4:
+        elif choice_mode == 4:
             print("==== アプリを終了します ====")
             break
+        else:
+            print("エラー: 1~4までのいずれかの整数を入力してください")
 
 
 def add_task():
