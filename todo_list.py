@@ -8,7 +8,11 @@ def main():
         print("3: タスク削除")
         print("4: 終了")
 
-        choice_mode = int(input(">>> "))
+        try:
+            choice_mode = int(input(">>> "))
+        except ValueError:
+            print("エラー: 整数を入力してください")
+            continue
 
         if choice_mode == 1:
             add_task()
