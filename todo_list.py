@@ -93,26 +93,47 @@ def delete_task():
 
     task_list = []
 
-    with open(CSV_FILE, "r", encoding="utf-8") as f:
-        reader = csv.reader(f)
-        for row in reader:
-            task_list.append(row[0])
+    try:
+        with open(CSV_FILE, "r", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                task_list.append(row[0])
+    except FileNotFoundError:
+        print("エラー: CSVファイルがありません 新規タスク追加をしてください")
+        return
+
+    if not task_list:
+        print("エラー: CSVファイルの中身が空です 新規タスク追加をしてください")
+        return
 
     for i, task in enumerate(task_list, 1):
         print(f"{i}: {task}")
 
-    print("削除するタスクの番号を入力してください")
-    # ユーザー入力値から削除対象のindexを取得する
-    input_task = int(input(">>> ")) - 1
-    alert_delete_task = task_list[input_task]
-    # 該当のタスクを削除し、CSVを上書きする
-    task_list.pop(input_task)
-    with open(CSV_FILE, "w", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        for row in task_list:
-            writer.writerow([row])
+    while True:
+        print("削除するタスクの番号を入力してください")
+        try:
+            # ユーザー入力値から削除対象のindexを取得する
+            input_task = int(input(">>> ")) - 1
+            alert_delete_task = task_list[input_task]
+            # 該当のタスクを削除し、CSVを上書きする
+            task_list.pop(input_task)
+            break
 
-    print(f"タスク'{alert_delete_task}'を削除しました")
+        except ValueError:
+            print("エラー: 整数を入力してください")
+
+        except IndexError:
+            print("エラー: 該当のタスクがありません リストの中から数字を選んでください")
+
+    try:
+        with open(CSV_FILE, "w", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            for row in task_list:
+                writer.writerow([row])
+    except IOError as e:
+        print(f"エラー: ファイルへの書き込みに失敗しました - {e}")
+    else:
+        print(f"タスク'{alert_delete_task}'を削除しました")
 
 
 if __name__ == "__main__":
