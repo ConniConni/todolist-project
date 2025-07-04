@@ -40,18 +40,25 @@ def add_task():
     入力されたタスクはCSVファイルに書き込む
     """
 
-    task_list = []
+    task_list = load_tasks()
 
     print("==== 新規タスクを追加します ====")
-    print("タスクを入力してください")
-    input_task = input(">>> ")
-    task_list.append(input_task)
 
-    # TODO sho_task_list実装後、todo.csvにすでに値が登録してある場合、タスクを読み込み、task_listに代入する処理を追加
+    while True:
+        print("タスクを入力してください")
+        input_task = input(">>> ")
+        # 入力値の前後の空白文字を削除する
+        register_task = input_task.strip()
 
-    with open(CSV_FILE, "w", encoding="utf-8", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerows(task_list)
+        if register_task:
+            break
+        else:
+            print("エラー: タスクは1文字以上で入力してください")
+
+    # タスクをCSVに保存する
+    task_list.append(register_task)
+    save_tasks(task_list)
+    print(f"タスク'{register_task}'を登録しました")
 
 
 def show_task_list():
@@ -61,21 +68,11 @@ def show_task_list():
     CSVファイルもしくはCSVファイルの中身がない場合は新規タスク登録を促すプロンプトを表示
     """
     print("==== タスク一覧を表示します ====")
-    task_list = []  # CSVファイルからタスク一覧を受け取る空のリスト
 
-    try:
-        with open(CSV_FILE, "r", encoding="utf-8") as f:
-            reader = csv.reader(f)
-            for row in reader:
-                task_list.append(row[0])
-
-    except FileNotFoundError:
-        print("エラー: CSVファイルがありません 新規タスク追加をしてください")
-        return
-
-    # CSVファイルの中身をチェックする
+    task_list = load_tasks()
+    # CSVファイルが存在しない、もしくは空の場合はmain()関数に戻る
     if not task_list:
-        print("エラー: CSVファイルの中身が空です 新規タスク追加をしてください")
+        print("エラー: 新規タスク追加をしてください")
         return
 
     # enumerate()関数 enumerate("第1引数: リストなどのイテラブルオブジェクト","第2引数: インデックス開始番号")
@@ -85,11 +82,67 @@ def show_task_list():
 
 def delete_task():
     """
-    タスク一覧からタスク選択し削除する関数
+    タスク一覧からタスクを選択し削除する関数
     番号の入力を促すプロンプトを表示し該当のタスク一覧から削除する
     残ったタスク一覧をCSVファイルに上書きする
     """
     print("==== タスクを削除します ====")
+
+    task_list = load_tasks()
+    # CSVファイルが存在しない、もしくは空の場合はmain()関数に戻る
+    if not task_list:
+        print("エラー:新規タスク追加をしてください")
+        return
+
+    for i, task in enumerate(task_list, 1):
+        print(f"{i}: {task}")
+
+    while True:
+        print("削除するタスクの番号を入力してください")
+        try:
+            # ユーザー入力値から削除対象のindexを取得する
+            input_task = int(input(">>> ")) - 1
+            alert_delete_task = task_list[input_task]
+            # task_listから該当のタスクを削除する
+            task_list.pop(input_task)
+            break
+
+        except ValueError:
+            print("エラー: 整数を入力してください")
+
+        except IndexError:
+            print("エラー: 該当のタスクがありません リストの中から数字を選んでください")
+
+    try:
+        # task_listのタスクをCSVファイルに保存する
+        save_tasks(task_list)
+    except IOError as e:
+        print(f"エラー: ファイルへの書き込みに失敗しました - {e}")
+    else:
+        print(f"タスク'{alert_delete_task}'を削除しました")
+
+
+def load_tasks():
+    """CSVファイルを読み込み、読み取ったタスクをリストに追加し返す関数"""
+
+    try:
+        with open(CSV_FILE, "r", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            return [row[0] for row in reader if row]
+
+    except FileNotFoundError:
+        return []
+
+
+def save_tasks(task_list):
+    """task_listのタスクをCSVに書き込む関数"""
+
+    with open(CSV_FILE, "w", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        for task in task_list:
+            # writerow()メソッドはイテラブルな引数を要求する
+            # 文字列もイテラブルなため、リストにしないとタスクが1文字ずつカンマ区切りで書き込まれてしまう
+            writer.writerow([task])
 
 
 if __name__ == "__main__":
