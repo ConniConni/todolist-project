@@ -40,15 +40,7 @@ def add_task():
     入力されたタスクはCSVファイルに書き込む
     """
 
-    task_list = []
-
-    try:
-        with open(CSV_FILE, "r", encoding="utf-8") as f:
-            reader = csv.reader(f)
-            for row in reader:
-                task_list.append(row[0])
-    except FileNotFoundError:
-        pass  # CSVファイルがない場合はtask_listはそのまま
+    task_list = load_tasks()
 
     print("==== 新規タスクを追加します ====")
 
@@ -64,7 +56,7 @@ def add_task():
         else:
             print("エラー: タスクは1文字以上で入力してください")
 
-    with open(CSV_FILE, "w", encoding="utf-8", newline="") as f:
+    with open(CSV_FILE, "w", encoding="utf-8") as f:
         writer = csv.writer(f)
         for task in task_list:
             # writerow()メソッドはイテラブルな引数を要求する
@@ -79,21 +71,11 @@ def show_task_list():
     CSVファイルもしくはCSVファイルの中身がない場合は新規タスク登録を促すプロンプトを表示
     """
     print("==== タスク一覧を表示します ====")
-    task_list = []  # CSVファイルからタスク一覧を受け取る空のリスト
 
-    try:
-        with open(CSV_FILE, "r", encoding="utf-8") as f:
-            reader = csv.reader(f)
-            for row in reader:
-                task_list.append(row[0])
-
-    except FileNotFoundError:
-        print("エラー: CSVファイルがありません 新規タスク追加をしてください")
-        return
-
-    # CSVファイルの中身をチェックする
+    task_list = load_tasks()
+    # CSVファイルが存在しない、もしくは空の場合はmain()関数に戻る
     if not task_list:
-        print("エラー: CSVファイルの中身が空です 新規タスク追加をしてください")
+        print("エラー: 新規タスク追加をしてください")
         return
 
     # enumerate()関数 enumerate("第1引数: リストなどのイテラブルオブジェクト","第2引数: インデックス開始番号")
@@ -109,19 +91,10 @@ def delete_task():
     """
     print("==== タスクを削除します ====")
 
-    task_list = []
-
-    try:
-        with open(CSV_FILE, "r", encoding="utf-8") as f:
-            reader = csv.reader(f)
-            for row in reader:
-                task_list.append(row[0])
-    except FileNotFoundError:
-        print("エラー: CSVファイルがありません 新規タスク追加をしてください")
-        return
-
+    task_list = load_tasks()
+    # CSVファイルが存在しない、もしくは空の場合はmain()関数に戻る
     if not task_list:
-        print("エラー: CSVファイルの中身が空です 新規タスク追加をしてください")
+        print("エラー:新規タスク追加をしてください")
         return
 
     for i, task in enumerate(task_list, 1):
@@ -152,6 +125,18 @@ def delete_task():
         print(f"エラー: ファイルへの書き込みに失敗しました - {e}")
     else:
         print(f"タスク'{alert_delete_task}'を削除しました")
+
+
+def load_tasks():
+    """CSVファイルを読み込み、読み取ったタスクをリストに追加し返す関数"""
+
+    try:
+        with open(CSV_FILE, "r", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            return [row[0] for row in reader if row]
+
+    except FileNotFoundError:
+        return []
 
 
 if __name__ == "__main__":
