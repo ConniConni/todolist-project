@@ -102,7 +102,14 @@ def delete_task():
         print(f"{i}: {task}")
 
     print("削除するタスクの番号を入力してください")
-    input_task = int(input(">>> "))
+    # ユーザー入力値から削除対象のindexを取得する
+    input_task = int(input(">>> ")) - 1
+    # 該当のタスクを削除し、CSVを上書きする
+    task_list.pop(input_task)
+    with open(CSV_FILE, "w", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        for row in task_list:
+            writer.writerow([row])
 
 
 if __name__ == "__main__":
