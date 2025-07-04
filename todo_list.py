@@ -48,17 +48,17 @@ def add_task():
         print("タスクを入力してください")
         input_task = input(">>> ")
         # 入力値の前後の空白文字を削除する
-        register_task = input_task.split()
+        register_task = input_task.strip()
 
         if register_task:
-            task_list.append(register_task)
-            print(f"タスク'{register_task}'を登録しました")
             break
         else:
             print("エラー: タスクは1文字以上で入力してください")
 
     # タスクをCSVに保存する
+    task_list.append(register_task)
     save_tasks(task_list)
+    print(f"タスク'{register_task}'を登録しました")
 
 
 def show_task_list():
