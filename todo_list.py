@@ -56,12 +56,8 @@ def add_task():
         else:
             print("エラー: タスクは1文字以上で入力してください")
 
-    with open(CSV_FILE, "w", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        for task in task_list:
-            # writerow()メソッドはイテラブルな引数を要求する
-            # 文字列もイテラブルなため、リストにしないとタスクが1文字ずつカンマ区切りで書き込まれてしまう
-            writer.writerow([task])
+    # タスクをCSVに保存する
+    save_tasks(task_list)
 
 
 def show_task_list():
@@ -106,7 +102,7 @@ def delete_task():
             # ユーザー入力値から削除対象のindexを取得する
             input_task = int(input(">>> ")) - 1
             alert_delete_task = task_list[input_task]
-            # 該当のタスクを削除し、CSVを上書きする
+            # task_listから該当のタスクを削除する
             task_list.pop(input_task)
             break
 
@@ -117,10 +113,8 @@ def delete_task():
             print("エラー: 該当のタスクがありません リストの中から数字を選んでください")
 
     try:
-        with open(CSV_FILE, "w", encoding="utf-8") as f:
-            writer = csv.writer(f)
-            for row in task_list:
-                writer.writerow([row])
+        # task_listのタスクをCSVファイルに保存する
+        save_tasks(task_list)
     except IOError as e:
         print(f"エラー: ファイルへの書き込みに失敗しました - {e}")
     else:
@@ -137,6 +131,17 @@ def load_tasks():
 
     except FileNotFoundError:
         return []
+
+
+def save_tasks(task_list):
+    """task_listのタスクをCSVに書き込む関数"""
+
+    with open(CSV_FILE, "w", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        for task in task_list:
+            # writerow()メソッドはイテラブルな引数を要求する
+            # 文字列もイテラブルなため、リストにしないとタスクが1文字ずつカンマ区切りで書き込まれてしまう
+            writer.writerow([task])
 
 
 if __name__ == "__main__":
