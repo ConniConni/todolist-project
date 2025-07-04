@@ -41,11 +41,23 @@ def add_task():
     """
 
     task_list = []
+    with open(CSV_FILE, "r", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        for row in reader:
+            task_list.append(row[0])
 
     print("==== 新規タスクを追加します ====")
 
     print("タスクを入力してください")
     input_task = input(">>> ")
+    task_list.append(input_task)
+
+    with open(CSV_FILE, "w", encoding="utf-8", newline="") as f:
+        writer = csv.writer(f)
+        for task in task_list:
+            # writerow()メソッドはイテラブルな引数を要求する
+            # 文字列もイテラブルなため、リストにしないとタスクが1文字ずつカンマ区切りで書き込まれてしまう
+            writer.writerow([task])
 
 
 def show_task_list():
