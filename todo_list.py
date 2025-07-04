@@ -51,7 +51,8 @@ def add_task():
         register_task = input_task.split()
 
         if register_task:
-            task_list.append(input_task)
+            task_list.append(register_task)
+            print(f"タスク'{register_task}'を登録しました")
             break
         else:
             print("エラー: タスクは1文字以上で入力してください")
