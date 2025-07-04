@@ -85,11 +85,24 @@ def show_task_list():
 
 def delete_task():
     """
-    タスク一覧からタスク選択し削除する関数
+    タスク一覧からタスクを選択し削除する関数
     番号の入力を促すプロンプトを表示し該当のタスク一覧から削除する
     残ったタスク一覧をCSVファイルに上書きする
     """
     print("==== タスクを削除します ====")
+
+    task_list = []
+
+    with open(CSV_FILE, "r", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        for row in reader:
+            task_list.append(row[0])
+
+    for i, task in enumerate(task_list, 1):
+        print(f"{i}: {task}")
+
+    print("削除するタスクの番号を入力してください")
+    input_task = int(input(">>> "))
 
 
 if __name__ == "__main__":
