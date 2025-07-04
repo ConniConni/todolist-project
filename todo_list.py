@@ -41,16 +41,28 @@ def add_task():
     """
 
     task_list = []
-    with open(CSV_FILE, "r", encoding="utf-8") as f:
-        reader = csv.reader(f)
-        for row in reader:
-            task_list.append(row[0])
+
+    try:
+        with open(CSV_FILE, "r", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                task_list.append(row[0])
+    except FileNotFoundError:
+        pass  # CSVファイルがない場合はtask_listはそのまま
 
     print("==== 新規タスクを追加します ====")
 
-    print("タスクを入力してください")
-    input_task = input(">>> ")
-    task_list.append(input_task)
+    while True:
+        print("タスクを入力してください")
+        input_task = input(">>> ")
+        # 入力値の前後の空白文字を削除する
+        register_task = input_task.split()
+
+        if register_task:
+            task_list.append(input_task)
+            break
+        else:
+            print("エラー: タスクは1文字以上で入力してください")
 
     with open(CSV_FILE, "w", encoding="utf-8", newline="") as f:
         writer = csv.writer(f)
