@@ -69,37 +69,54 @@ def delete_task():
     番号の入力を促すプロンプトを表示し該当のタスク一覧から削除する
     残ったタスク一覧をCSVファイルに上書きする
     """
+    logger.info("タスク削除処理を開始しました。")
     print("==== タスクを削除します ====")
 
-    task_list = load_tasks()
-    # CSVファイルが存在しない、もしくは空の場合はmain()関数に戻る
-    if not task_list:
-        print("エラー:新規タスク追加をしてください")
-        return
-
-    for i, task in enumerate(task_list, 1):
-        print(f"{i}: {task}")
-
-    while True:
-        print("削除するタスクの番号を入力してください")
-        try:
-            # ユーザー入力値から削除対象のindexを取得する
-            input_task = int(input(">>> ")) - 1
-            alert_delete_task = task_list[input_task]
-            # task_listから該当のタスクを削除する
-            task_list.pop(input_task)
-            break
-
-        except ValueError:
-            print("エラー: 整数を入力してください")
-
-        except IndexError:
-            print("エラー: 該当のタスクがありません リストの中から数字を選んでください")
-
     try:
-        # task_listのタスクをCSVファイルに保存する
-        save_tasks(task_list)
-    except IOError as e:
-        print(f"エラー: ファイルへの書き込みに失敗しました - {e}")
-    else:
-        print(f"タスク'{alert_delete_task}'を削除しました")
+        task_list = load_tasks()
+        # CSVファイルが存在しない、もしくは空の場合はmain()関数に戻る
+        if not task_list:
+            logger.warning("不正な操作: タスク一覧がない状態で一覧取得が行われました。")
+            logger.info("タスク削除処理を終了しました。")
+            print("エラー:新規タスク追加をしてください")
+            return
+
+        for i, task in enumerate(task_list, 1):
+            print(f"{i}: {task}")
+
+        while True:
+            print("削除するタスクの番号を入力してください")
+            try:
+                # ユーザー入力値から削除対象のindexを取得する
+                input_task = int(input(">>> ")) - 1
+                alert_delete_task = task_list[input_task]
+                # task_listから該当のタスクを削除する
+                task_list.pop(input_task)
+                logger.info(f"タスク一覧から'{alert_delete_task}'を削除しました。")
+                break
+
+            except ValueError as e:
+                logger.warning(f"{e}: 削除対象を選ぶのに整数以外が入力されました。")
+                print("エラー: 整数を入力してください")
+
+            except IndexError as e:
+                logger.warning(
+                    f"{e}: 削除対象を選ぶのにリスト外の整数が入力されました。"
+                )
+                print(
+                    "エラー: 該当のタスクがありません リストの中から数字を選んでください"
+                )
+
+        try:
+            # task_listのタスクをCSVファイルに保存する
+            save_tasks(task_list)
+        except IOError as e:
+            logger.error(f"{e}: ファイルへの書き込みに失敗しました。")
+            print(f"エラー: ファイルへの書き込みに失敗しました - {e}")
+        else:
+            logger.info(f"メモリから'{alert_delete_task}'を削除しました")
+
+            print(f"CSVファイルから'{alert_delete_task}'を削除しました")
+
+    finally:
+        logger.info("タスク削除処理を終了しました。")
