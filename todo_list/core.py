@@ -1,5 +1,10 @@
+import logging
+
 from .utils.file_handler import load_tasks
 from .utils.file_handler import save_tasks
+
+
+logger = logging.getLogger(__name__)
 
 
 def add_task():
@@ -11,6 +16,7 @@ def add_task():
 
     task_list = load_tasks()
 
+    logger.info("新規タスク処理を開始しました。")
     print("==== 新規タスクを追加します ====")
 
     while True:
@@ -20,13 +26,16 @@ def add_task():
         register_task = input_task.strip()
 
         if register_task:
+            logger.info("新規タスク処理を終了しました。")
             break
         else:
+            logger.warning("入力値不正: 新規タスクが空文字で入力されました。")
             print("エラー: タスクは1文字以上で入力してください")
 
     # タスクをCSVに保存する
     task_list.append(register_task)
     save_tasks(task_list)
+    logger.info(f"タスク'{register_task}'を登録しました。")
     print(f"タスク'{register_task}'を登録しました")
 
 
