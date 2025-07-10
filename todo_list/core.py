@@ -45,17 +45,21 @@ def show_task_list():
     CSVファイルからタスクを読み込みタスク一覧を表示
     CSVファイルもしくはCSVファイルの中身がない場合は新規タスク登録を促すプロンプトを表示
     """
+    logger.info("タスク一覧取得処理を開始しました。")
     print("==== タスク一覧を表示します ====")
 
     task_list = load_tasks()
     # CSVファイルが存在しない、もしくは空の場合はmain()関数に戻る
     if not task_list:
         print("エラー: 新規タスク追加をしてください")
+        logger.info("タスク一覧取得処理を終了しました。")
         return
 
     # enumerate()関数 enumerate("第1引数: リストなどのイテラブルオブジェクト","第2引数: インデックス開始番号")
     for i, task in enumerate(task_list, 1):
         print(f"{i}: {task}")
+
+    logger.info("タスク一覧取得処理を終了しました。")
 
 
 def delete_task():
