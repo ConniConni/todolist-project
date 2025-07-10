@@ -55,6 +55,7 @@ def show_task_list():
             print("エラー: 新規タスク追加をしてください")
             return
         # enumerate()関数 enumerate("第1引数: リストなどのイテラブルオブジェクト","第2引数: インデックス開始番号")
+        logger.info(f"タスク一覧取得結果: {task_list}")
         for i, task in enumerate(task_list, 1):
             print(f"{i}: {task}")
 
