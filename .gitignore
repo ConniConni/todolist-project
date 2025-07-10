@@ -10,3 +10,6 @@ __pycache__/
 
 # CSVファイル
 todo.csv
+
+# ログファイル
+todo_list_log.txt

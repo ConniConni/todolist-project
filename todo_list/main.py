@@ -1,10 +1,17 @@
+import logging
+
 from .core import add_task
 from .core import show_task_list
 from .core import delete_task
 
 
+logger = logging.getLogger(__name__)
+
+
 def run_app():
     """todoリストアプリのメイン関数"""
+
+    logger.info("アプリケーションを開始しました。")
 
     while True:
         print("==== 選択メニューの番号を入力してください ====")
@@ -16,6 +23,7 @@ def run_app():
         try:
             choice_mode = int(input(">>> "))
         except ValueError:
+            logger.warning("入力値不正: メニュー選択で整数以外が入力されました。")
             print("エラー: 整数を入力してください")
             continue
 
@@ -26,7 +34,9 @@ def run_app():
         elif choice_mode == 3:
             delete_task()
         elif choice_mode == 4:
+            logger.info("アプリケーションを終了しました。")
             print("==== アプリを終了します ====")
             break
         else:
+            logger.warning("入力値不正: メニュー選択で範囲外の整数が入力されました。")
             print("エラー: 1~4までのいずれかの整数を入力してください")
