@@ -23,7 +23,7 @@ def run_app():
         try:
             choice_mode = int(input(">>> "))
         except ValueError:
-            logger.warning("入力値不正: メニュー選択では整数を入力してください。")
+            logger.warning("入力値不正: メニュー選択で整数以外が入力されました。")
             print("エラー: 整数を入力してください")
             continue
 
@@ -38,7 +38,5 @@ def run_app():
             print("==== アプリを終了します ====")
             break
         else:
-            logger.warning(
-                "入力値不正: メニュー選択は表示された整数の中から選んで入力してください。"
-            )
+            logger.warning("入力値不正: メニュー選択で範囲外の整数が入力されました。")
             print("エラー: 1~4までのいずれかの整数を入力してください")
