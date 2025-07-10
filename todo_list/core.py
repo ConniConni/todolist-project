@@ -26,7 +26,6 @@ def add_task():
         register_task = input_task.strip()
 
         if register_task:
-            logger.info("新規タスク処理を終了しました。")
             break
         else:
             logger.warning("入力値不正: 新規タスクが空文字で入力されました。")
@@ -36,6 +35,7 @@ def add_task():
     task_list.append(register_task)
     save_tasks(task_list)
     logger.info(f"タスク'{register_task}'を登録しました。")
+    logger.info("新規タスク処理を終了しました。")
     print(f"タスク'{register_task}'を登録しました")
 
 
